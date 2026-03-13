@@ -1,0 +1,24 @@
+databaseChangeLog:
+    - changeSet:
+          id: 001
+          author: nexora
+          changes:
+              - sqlFile:
+                    path: sql/001_lookups.sql
+                    relativeToChangelogFile: true
+
+    - changeSet:
+          id: 002
+          author: nexora
+          changes:
+              - sqlFile:
+                    path: sql/002_create_admins_table.sql
+                    relativeToChangelogFile: true
+
+    - changeSet:
+          id: 003
+          author: nexora
+          changes:
+              - sqlFile:
+                    path: sql/003_create_users_table.sql
+                    relativeToChangelogFile: true
