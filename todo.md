@@ -1,3 +1,5 @@
 - hardcoded expiry value
+- integration test in pipeline
 - email will be removed from the response of login
 - jwt util returns error where as crypto util returns nexora error
+- config in github migration

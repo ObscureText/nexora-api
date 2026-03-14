@@ -1,0 +1,46 @@
+name: Nexora API CI (DEV)
+
+on:
+    push:
+        branches:
+            - dev
+
+jobs:
+    unit-tests:
+        name: 🧪 Unit Tests
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-go@v5
+              with:
+                  go-version: "1.25"
+
+            - run: go mod download
+
+            - run: go test ./... -count=1
+
+    migrate:
+        name: 🗄 Run Liquibase Migration (DEV)
+        needs:
+            - unit-tests
+        runs-on: ubuntu-latest
+
+        environment: dev
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: liquibase/setup-liquibase@v2
+              with:
+                  version: "4.32.0"
+                  edition: "community"
+
+            - name: Run Liquibase Update
+              run: |
+                  liquibase \
+                    --url="jdbc:postgresql://${{ vars.NEXORA_DB_HOST }}:${{ vars.NEXORA_DB_PORT }}/${{ vars.NEXORA_DB_NAME }}" \
+                    --username="${{ secrets.NEXORA_DB_ADMIN_USERNAME }}" \
+                    --password="${{ secrets.NEXORA_DB_ADMIN_PASSWORD }}" \
+                    --changelog-file=migrations/changelog.yaml \
+                    update
