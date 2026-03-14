@@ -4,5 +4,5 @@ CREATE TABLE user_roles (
 );
 
 INSERT INTO user_roles (id, name) VALUES
-(1,'COMPANY_ADMIN'),
+(1,'COMPANY_OWNER'),
 (2,'INDIVIDUAL');

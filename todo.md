@@ -1,0 +1,3 @@
+- hardcoded expiry value
+- email will be removed from the response of login
+- jwt util returns error where as crypto util returns nexora error
