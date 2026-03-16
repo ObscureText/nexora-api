@@ -36,10 +36,10 @@ func NewSystemFailureRepoError(errorMessage string) *RepoError {
 }
 
 const (
-	SystemFailureRepoErrorCode  RepoErrorCode = "REPO_ERROR_SYSTEM_FAILURE"
-	EntityNotFoundRepoErrorCode RepoErrorCode = "REPO_ERROR_ENTITY_NOT_FOUND"
+	UserNotFoundRepoErrorCode  RepoErrorCode = "REPO_ERROR_USER_NOT_FOUND"
+	SystemFailureRepoErrorCode RepoErrorCode = "REPO_ERROR_SYSTEM_FAILURE"
 )
 
 var (
-	EntityNotFoundRepoError *RepoError = newRepoError(EntityNotFoundRepoErrorCode, "Entity Not Found")
+	UserNotFoundRepoError *RepoError = newRepoError(UserNotFoundRepoErrorCode, "User Not Found")
 )

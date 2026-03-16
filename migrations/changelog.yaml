@@ -12,7 +12,7 @@ databaseChangeLog:
           author: nexora
           changes:
               - sqlFile:
-                    path: sql/002_create_admins_table.sql
+                    path: sql/002_create_service_providers_table.sql
                     relativeToChangelogFile: true
 
     - changeSet:

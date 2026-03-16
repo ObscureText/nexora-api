@@ -6,7 +6,6 @@ import (
 	"nexora-api/internal/controllers/dto"
 	"nexora-api/internal/controllers/interceptor"
 
-	nexoraError "nexora-api/internal/errors"
 	"nexora-api/internal/services"
 
 	"github.com/gin-gonic/gin"
@@ -30,11 +29,6 @@ func (authController *AuthController) Login(context *gin.Context) {
 		return
 	}
 
-	if !loginRequest.UserRole.IsValid() {
-		context.JSON(http.StatusBadRequest, nexoraError.BadRequestNexoraError)
-		return
-	}
-
 	loginResponse, loginErr := authController.authService.Login(&loginRequest)
 	if loginErr != nil {
 		interceptor.HandleServiceError(context, loginErr)
@@ -43,6 +37,3 @@ func (authController *AuthController) Login(context *gin.Context) {
 
 	context.JSON(http.StatusOK, loginResponse)
 }
-
-// router for auth
-// db conn file

@@ -4,6 +4,7 @@ import (
 	"log"
 	"nexora-api/internal/controllers"
 	"nexora-api/internal/db"
+	middleware "nexora-api/internal/middlewares"
 	"nexora-api/internal/repositories"
 	"nexora-api/internal/routes"
 	"nexora-api/internal/services"
@@ -22,23 +23,26 @@ func main() {
 	cryptUtil := utils.NewCryptoUtils()
 
 	userRepository := repositories.NewUserRepository(database)
-	adminRepository := repositories.NewAdminRepository(database)
 
+	userService := services.NewUserService(userRepository)
 	authService := services.NewAuthService(
 		jwtUtil,
 		cryptUtil,
 		userRepository,
-		adminRepository,
 	)
 
+	userController := controllers.NewUserController(userService)
 	authController := controllers.NewAuthController(authService)
 
 	router := gin.Default()
 
+	authMiddleware := middleware.AuthMiddleware(jwtUtil)
+
+	routes.RegisterUserRoutes(router, authMiddleware, userController)
 	routes.RegisterAuthRoutes(router, authController)
 
 	router.GET("/", func(ctx *gin.Context) {
-		ctx.String(200, "Nexora is alive ...")
+		ctx.String(200, "Nexora is live ...")
 	})
 
 	router.Run(":8080")

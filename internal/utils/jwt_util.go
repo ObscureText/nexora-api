@@ -9,15 +9,15 @@ import (
 )
 
 type jwtClaims struct {
-	UserId   string             `json:"user_id"`
-	UserRole domain.AccountRole `json:"user_role"`
+	UserId   string          `json:"user_id"`
+	UserRole domain.UserRole `json:"user_role"`
 
 	jwt.RegisteredClaims
 }
 
 type JwtUtil interface {
-	GenerateToken(userId string, role domain.AccountRole) (string, error)
-	ParseToken(token string) (string, domain.AccountRole, error)
+	GenerateToken(userId string, role domain.UserRole) (string, error)
+	ParseToken(token string) (string, domain.UserRole, error)
 }
 
 type jwtUtil struct {
@@ -32,12 +32,12 @@ func NewJWTUtil() JwtUtil {
 	}
 }
 
-func (util *jwtUtil) GenerateToken(userId string, role domain.AccountRole) (string, error) {
+func (util *jwtUtil) GenerateToken(userId string, role domain.UserRole) (string, error) {
 	claims := jwtClaims{
 		UserId:   userId,
 		UserRole: role,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(12 * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(5 * time.Minute)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	}
@@ -46,7 +46,7 @@ func (util *jwtUtil) GenerateToken(userId string, role domain.AccountRole) (stri
 	return token.SignedString(util.secret)
 }
 
-func (util *jwtUtil) ParseToken(tokenString string) (string, domain.AccountRole, error) {
+func (util *jwtUtil) ParseToken(tokenString string) (string, domain.UserRole, error) {
 	claims := &jwtClaims{}
 
 	_, err := jwt.ParseWithClaims(

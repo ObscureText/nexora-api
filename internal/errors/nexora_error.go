@@ -32,11 +32,15 @@ func NewInternalServerNexoraError(errorMessage string) *NexoraError {
 
 const (
 	BadRequestNexoraErrorCode         NexoraErrorCode = "NEXORA_ERROR_BAD_REQUEST"
+	UnauthorizedNexoraErrorCode       NexoraErrorCode = "NEXORA_ERROR_UNAUTHORIZED"
+	TokenExpiredNexoraErrorCode       NexoraErrorCode = "NEXORA_ERROR_TOKEN_EXPIRED"
 	InternalServerNexoraErrorCode     NexoraErrorCode = "NEXORA_ERROR_INTERNAL_SERVER_ERROR"
 	InvalidCredentialsNexoraErrorCode NexoraErrorCode = "NEXORA_ERROR_INVALID_CREDENTIALS"
 )
 
 var (
 	BadRequestNexoraError         *NexoraError = newNexoraError(BadRequestNexoraErrorCode, "Invalid request", http.StatusBadRequest)
+	UnauthorizedNexoraError       *NexoraError = newNexoraError(UnauthorizedNexoraErrorCode, "Unauthorized", http.StatusUnauthorized)
+	TokenExpiredNexoraError       *NexoraError = newNexoraError(TokenExpiredNexoraErrorCode, "Token expired", http.StatusUnauthorized)
 	InvalidCredentialsNexoraError *NexoraError = newNexoraError(InvalidCredentialsNexoraErrorCode, "Invalid credetials", http.StatusUnauthorized)
 )

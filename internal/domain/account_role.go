@@ -1,13 +1,9 @@
 package domain
 
-type AccountRole string
+type UserRole string
 
 const (
-	Admin        AccountRole = "ADMIN"
-	Individual   AccountRole = "INDIVIDUAL"
-	CompanyOwner AccountRole = "COMPANY_OWNER"
+	Individual           UserRole = "INDIVIDUAL"
+	CompanyOwner         UserRole = "ESTABLISHMENT_OWNER"
+	ServiceProviderAdmin UserRole = "SERVICE_PROVIDER_ADMIN"
 )
-
-func (role AccountRole) IsValid() bool {
-	return role == CompanyOwner || role == Individual || role == Admin
-}
