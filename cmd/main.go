@@ -10,6 +10,8 @@ import (
 	"nexora-api/internal/services"
 	"nexora-api/internal/utils"
 
+	"github.com/gin-contrib/cors"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -35,6 +37,8 @@ func main() {
 	authController := controllers.NewAuthController(authService)
 
 	router := gin.Default()
+
+	router.Use(cors.Default())
 
 	authMiddleware := middleware.AuthMiddleware(jwtUtil)
 
