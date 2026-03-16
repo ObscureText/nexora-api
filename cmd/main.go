@@ -4,7 +4,7 @@ import (
 	"log"
 	"nexora-api/internal/controllers"
 	"nexora-api/internal/db"
-	middleware "nexora-api/internal/middlewares"
+	"nexora-api/internal/middlewares"
 	"nexora-api/internal/repositories"
 	"nexora-api/internal/routes"
 	"nexora-api/internal/services"
@@ -48,7 +48,7 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	authMiddleware := middleware.AuthMiddleware(jwtUtil)
+	authMiddleware := middlewares.AuthMiddleware(jwtUtil)
 
 	routes.RegisterUserRoutes(router, authMiddleware, userController)
 	routes.RegisterAuthRoutes(router, authController)

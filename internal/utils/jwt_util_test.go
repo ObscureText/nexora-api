@@ -27,7 +27,7 @@ func TestJwtUtilSuite(t *testing.T) {
 }
 
 func (suite *JwtUtilTestSuite) TestGenerateAndParseToken() {
-	token, err := suite.jwtUtil.GenerateToken("test-user-id", domain.CompanyOwner)
+	token, err := suite.jwtUtil.GenerateToken("test-user-id", domain.EstablishmentOwner)
 
 	suite.Require().NoError(err)
 	suite.Require().NotEmpty(token)
@@ -36,7 +36,7 @@ func (suite *JwtUtilTestSuite) TestGenerateAndParseToken() {
 
 	suite.Require().NoError(err)
 	suite.Equal("test-user-id", parsedUserID)
-	suite.Equal(domain.CompanyOwner, parsedRole)
+	suite.Equal(domain.EstablishmentOwner, parsedRole)
 }
 
 func (suite *JwtUtilTestSuite) TestParseToken_InvalidSignature() {
