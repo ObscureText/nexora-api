@@ -13,5 +13,5 @@ func RegisterUserRoutes(
 ) {
 	user := router.Group("/api/user")
 
-	user.GET("/me", authMiddleware, userController.GetUser)
+	user.GET("/profile", authMiddleware, userController.GetUser)
 }

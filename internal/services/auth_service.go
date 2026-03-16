@@ -53,5 +53,5 @@ func (authService authService) Login(loginRequest *dto.LoginRequest) (*dto.Login
 		return nil, nexora_error.NewInternalServerNexoraError("AuthService: Login: GenerateToken error: " + tokenErr.Error())
 	}
 
-	return &dto.LoginResponse{Token: token}, nil
+	return &dto.LoginResponse{Token: token, Role: user.Role}, nil
 }
