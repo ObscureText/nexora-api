@@ -9,6 +9,7 @@ import (
 	"nexora-api/internal/routes"
 	"nexora-api/internal/services"
 	"nexora-api/internal/utils"
+	"time"
 
 	"github.com/gin-contrib/cors"
 
@@ -38,7 +39,14 @@ func main() {
 
 	router := gin.Default()
 
-	router.Use(cors.Default())
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
+		AllowCredentials: false,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	authMiddleware := middleware.AuthMiddleware(jwtUtil)
 
