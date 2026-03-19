@@ -10,11 +10,18 @@ import (
 )
 
 type UserController struct {
-	userService services.UserService
+	userService      services.UserService
+	errorInterceptor interceptor.ErrorInterceptor
 }
 
-func NewUserController(userService services.UserService) *UserController {
-	return &UserController{userService: userService}
+func NewUserController(
+	userService services.UserService,
+	errorInterceptor interceptor.ErrorInterceptor,
+) *UserController {
+	return &UserController{
+		userService:      userService,
+		errorInterceptor: errorInterceptor,
+	}
 }
 
 func (userController *UserController) GetUser(ctx *gin.Context) {
@@ -22,7 +29,7 @@ func (userController *UserController) GetUser(ctx *gin.Context) {
 
 	user, getErr := userController.userService.GetUser(userId)
 	if getErr != nil {
-		interceptor.HandleServiceError(ctx, getErr)
+		userController.errorInterceptor.HandleServiceError(ctx, getErr)
 		return
 	}
 

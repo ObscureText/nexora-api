@@ -12,12 +12,17 @@ import (
 )
 
 type AuthController struct {
-	authService services.AuthService
+	authService      services.AuthService
+	errorInterceptor interceptor.ErrorInterceptor
 }
 
-func NewAuthController(authService services.AuthService) *AuthController {
+func NewAuthController(
+	authService services.AuthService,
+	errorInterceptor interceptor.ErrorInterceptor,
+) *AuthController {
 	return &AuthController{
-		authService: authService,
+		authService:      authService,
+		errorInterceptor: errorInterceptor,
 	}
 }
 
@@ -25,13 +30,13 @@ func (authController *AuthController) Login(context *gin.Context) {
 	var loginRequest dto.LoginRequest
 
 	if bindErr := context.ShouldBindJSON(&loginRequest); bindErr != nil {
-		interceptor.HandleBadRequest(context, bindErr)
+		authController.errorInterceptor.HandleBadRequest(context, bindErr)
 		return
 	}
 
 	loginResponse, loginErr := authController.authService.Login(&loginRequest)
 	if loginErr != nil {
-		interceptor.HandleServiceError(context, loginErr)
+		authController.errorInterceptor.HandleServiceError(context, loginErr)
 		return
 	}
 

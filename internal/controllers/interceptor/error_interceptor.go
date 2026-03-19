@@ -11,7 +11,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func HandleBadRequest(context *gin.Context, err error) {
+type ErrorInterceptor interface {
+	HandleBadRequest(context *gin.Context, err error)
+	HandleServiceError(context *gin.Context, nexoraError *nexoraError.NexoraError)
+}
+
+type errorInterceptor struct{}
+
+func NewErrorInterceptor() ErrorInterceptor {
+	return &errorInterceptor{}
+}
+
+func (_ *errorInterceptor) HandleBadRequest(context *gin.Context, err error) {
 	context.AbortWithStatusJSON(
 		http.StatusBadRequest,
 		nexoraError.NexoraError{
@@ -21,7 +32,7 @@ func HandleBadRequest(context *gin.Context, err error) {
 	)
 }
 
-func HandleServiceError(context *gin.Context, nexoraError *nexoraError.NexoraError) {
+func (_ *errorInterceptor) HandleServiceError(context *gin.Context, nexoraError *nexoraError.NexoraError) {
 	if nexoraError.HttpStatusCode == http.StatusInternalServerError {
 		fmt.Printf("CRASH - %+v\n, Path: %s", nexoraError, context.Request.URL.Path)
 		context.AbortWithStatusJSON(
